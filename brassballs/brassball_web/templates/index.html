@@ -1,0 +1,203 @@
+<html>
+<head></head>
+<body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '9732885854', // App ID
+    channelUrl : '//http://gerrit.scripts.mit.edu/brassballs/bb/channel', // Channel File
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+
+  // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
+  // for any authentication related change, such as login, logout or session refresh. This means that
+  // whenever someone who was previously logged out tries to log in again, the correct case below 
+  // will be handled.
+
+  FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    // the user is logged in and has authenticated your
+    // app, and response.authResponse supplies
+    // the user's ID, a valid access token, a signed
+    // request, and the time the access token 
+    // and signed request each expire
+    var uid = response.authResponse.userID;
+    var accessToken = response.authResponse.accessToken;
+  } else if (response.status === 'not_authorized') {
+    // the user is logged in to Facebook, 
+    // but has not authenticated your app
+	document.location = "http://gerrit.scripts.mit.edu/brassballs/bb/splash";
+  } else {
+    // the user isn't logged in to Facebook.
+  	
+	document.location = "http://gerrit.scripts.mit.edu/brassballs/bb/splash";
+  }
+
+
+
+ });
+  
+  FB.Event.subscribe('auth.authResponseChange', function(response) {
+    // Here we specify what we do with the response anytime this event occurs. 
+    if (response.status === 'connected') {
+      // The response object is returned with a status field that lets the app know the current
+      // login status of the person. In this case, we're handling the situation where they 
+      // have logged in to the app.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // In this case, the person is logged into Facebook, but not into the app, so we call
+      // FB.login() to prompt them to do so. 
+      // In real-life usage, you wouldn't want to immediately prompt someone to login 
+      // like this, for two reasons:
+      // (1) JavaScript created popup windows are blocked by most browsers unless they 
+      // result from direct interaction from people using the app (such as a mouse click)
+      // (2) it is a bad experience to be continually prompted to login upon page load.
+      FB.login();
+    } else {
+      // In this case, the person is not logged into Facebook, so we call the login() 
+      // function to prompt them to do so. Note that at this stage there is no indication
+      // of whether they are logged into the app. If they aren't then they'll see the Login
+      // dialog right after they log in to Facebook. 
+      // The same caveats as above apply to the FB.login() call here.
+      FB.login();
+    }
+  });
+  };
+
+  // Load the SDK asynchronously
+  (function(d){
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "//connect.facebook.net/en_US/all.js";
+   ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+  // Here we run a very simple test of the Graph API after login is successful. 
+  // This testAPI() function is only called in those cases. 
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+    });
+  }
+</script>
+
+
+<h1> Your Games </h1>
+<span>
+
+<script>
+function fbLogout() {
+        FB.logout(function (response) {
+            //Do what ever you want here when logged out like reloading the page
+            window.location.reload();
+        });
+    }
+
+function FacebookInviteFriends() {
+FB.ui({
+method: 'apprequests',
+message: 'Do you have brass balls?',
+redirect_url: 'http://gerrit.scripts.mit.edu/brassballs/bb/startgame/{{ user.username }}'
+});	
+}
+</script>
+
+<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+|
+
+<span id="fbLogout" onclick="fbLogout()"><a href='#' class="fb_button fb_button_medium"><span class="fb_button_text">Logout</span></a></span>
+</span>
+<span class="invite-friends-link"><a href='#' onclick="FacebookInviteFriends();">
+| Invite friends link text
+</a></span>
+
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% if paid %}
+    <form action="http://gerrit.scripts.mit.edu/brassballs/bb/vote" method="post">
+    <ul>
+	    {% csrf_token %}
+	    {% for question in latest_question_list %}
+        <li>{{ question.money }} {{ question.start_date }} 
+	<input type="radio" name="split" id="split{{ forloop.counter }}" value="{{ question.id }}"> Split 
+| 
+	<input type="radio" name="steal" id="steal{{ forloop.counter }}" value="{{ question.id }}"> Steal 
+	    {% endfor %}
+    </ul>
+    <input type='submit' value='Vote'>
+</form>
+
+Start a match!
+<ul>
+	    {% for user in rand_user_list %}
+    <li>    <a href='http://gerrit.scripts.mit.edu/brassballs/bb/match/{{ user.user_id }}'><img src='{{ user.pic_url }}'></a>
+	    {% endfor %}
+</ul>
+
+High Scores!
+<ul>
+	    {% for user in rand_user_list %}
+    <li>    {{ user.money }}<img src='{{ users.user_i.pic_url }}'>
+	    {% endfor %}
+
+</ul>
+
+<hr>
+
+Current Games!
+<form action="http://gerrit.scripts.mit.edu/brassballs/bb/voteall" method="post">
+	    {% csrf_token %}
+<ul>
+	    {% for values in active_matches %}
+    <li>   {{ values.id }} {{ values.money }} {{ values.first_name }} {{ values.last_name }} <img src='{{ values.pic_url }}'>
+		<input type="radio" name="{{ values.id }}" id="split{{ forloop.counter }}" value="split"> Split 
+| 
+	<input type="radio" name="{{ values.id }}" id="steal{{ forloop.counter }}" value="steal"> Steal 
+	    {% endfor %}
+</ul>
+
+    <input type='submit' value='Vote'>
+</form>
+
+
+
+{% else %}
+<hr>
+You need to pay to play!
+<br/><br/>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="FJH4X669YTQLY">
+<input type="hidden" name="lc" value="US">
+<input type="hidden" name="item_name" value="Brass Balls">
+<input type="hidden" name="amount" value="10.00">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="button_subtype" value="services">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="cn" value="Add special instructions to the seller:">
+<input type="hidden" name="no_shipping" value="1">
+<input type="hidden" name="rm" value="1">
+<input type="hidden" name="return" value="http://gerrit.scripts.mit.edu/brassballs/bb/paymentsuccess">
+<input type="hidden" name="cancel_return" value="http://gerrit.scripts.mit.edu/brassballs/bb/paymentfail">
+<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+<input type="hidden" name="user_id" value="{{ user.username }}">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+<hr/>
+
+{% endif %}
+
+
+<script>
+
+FB.ui({method: 'apprequests',
+  message: 'My Great Request'
+}, requestCallback);
+</script>

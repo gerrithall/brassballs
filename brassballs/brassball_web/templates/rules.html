@@ -1,0 +1,131 @@
+<html>
+<head>
+<title>BB Leaderboard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (BB Leaderboard.bmp) -->
+<table id="Table_01" width="801" height="600" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td rowspan="3">
+		<a href='http://brassballs.biz/'>	<img src="images/BB_Leaderboard_logo.gif" width="397" height="134" alt=""></a></td>
+		<td colspan="3" rowspan="2">
+			<img src="images/BB_Leaderboard_user_top.gif" width="289" height="83" alt=""></td>
+		<td>
+			<img src="images/BB_Leaderboard_top_logout.gif" width="114" height="66" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="66" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<a href='mailto:gerrit@mit.edu'><img src="images/BB_Leaderboard_contact.gif" width="114" height="68" alt=""></a></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="17" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<a href='http://brassballs.biz/leaderboard'><img src="images/BB_Leaderboard_leaderboard.gif" width="121" height="51" alt=""></a></td>
+		<td>
+			<a href='http://brassballs.biz/about'><img src="images/BB_Leaderboard_rules.gif" width="87" height="51" alt=""></a></td>
+		<td>
+			<a href='http://brassballs.biz/about'><img src="images/BB_Leaderboard_faq.gif" width="81" height="51" alt=""></a></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="51" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="4" style="background-color: #f5eddb; padding: 10px;">
+
+    <h3>The setup</h3>
+   
+        <ol>
+            <li>When a second player accepts the challenge, a game starts</li>
+            <li>One game is played between two players every day, and the result is emailed at midnight</li>
+            <li>You can invite up to ten friends to play, which leads to a maximum of 10 games per day. There is a $1 buy-in for each game, so you can put up $10 in total</li>
+    </ol>
+
+<h3>The game</h3>
+            
+                <ol>
+            <li>Players pool their money to create a pot. Each player then chooses one of two Brass Balls, one that means "Split", and one that means "Steal"
+<p>•	If both players choose a Split ball, the pot is split equally between them and they both get a bonus % (changing periodically) as a reward for being fair and splitting the pot<p>
+    <p>•	If one player chooses a Split ball and the other chooses a Steal ball, the stealer takes all the money minus a small fee and the splitter is left empty-handed</p>
+    <p>•	If both players choose Steal balls, they both lose their investment</p>
+</li>
+    <li>The table below shows how much of the pot goes to each player based on the different combinations of choices:
+    </li>
+    <p> 
+        <table>
+      <tr>
+          <th><em>Result</em></th>
+        <th>P2 Split</th>
+        <th>P2 Steal</th>
+      </tr>
+    
+      <tr>
+        <th>P1 Split</th>
+        <td>50%+bonus%	50%+bonus%</td>
+        <td>95% (5% fee)	0%</td>
+      </tr>
+    
+      <tr>
+        <th>P1 Steal</th>
+        <td>0%	    95% (5% fee)</td>
+        <td>0%		0%</td>
+      </tr>
+    
+    </table>
+    </p>
+    <li>The default setting is the “Split” ball, so players have to actively switch to “Steal” should they wish to do so</li>
+    <li>The bonus % varies based on the number of people splitting and stealing, and changes periodically</li>
+    <li>The players are encouraged to speak with each before making their choices</li>
+                </ol>
+
+
+
+
+
+		</td>
+		<td valign='top' align='center'>
+		<div style='padding: 4px; background-color: #CFC'>
+		<b>Join the fun</b>
+
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="cbt" value="Play Now">
+{% comment %}<input type="hidden" name="business" value="FJH4X669YTQLY">{% endcomment %}
+<input type="hidden" name="business" value="ghall1@gmail.com">
+<input type="hidden" name="lc" value="US">
+<input type="hidden" name="item_name" value="Brass Balls">
+<input type="hidden" name="amount" value="10.00">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="button_subtype" value="services">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="cn" value="Add special instructions to the seller:">
+<input type="hidden" name="no_shipping" value="1">
+<input type="hidden" name="rm" value="1">
+<input type="hidden" name="return" value="http://gerrit.scripts.mit.edu/brassballs/bb/paymentsuccess">
+<input type="hidden" name="cancel_return" value="http://gerrit.scripts.mit.edu/brassballs/bb/paymentfail">
+<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+<input type="hidden" name="user_id" value="{{ user.username }}">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+</div>
+		
+		<br/><b>Top 5:</b>
+{%for values in tops%}
+<br/>
+<img src='{{ values.pic_url }}'> <br/>
+{{ values.first_name }}
+<br/>
+${{ values.money|floatformat:2 }} 
+<br/>
+{%endfor%}
+		</td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="466" alt=""></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>

@@ -1,0 +1,283 @@
+<html>
+<head>
+<title>BB dashboard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+#columns {
+        width: 75px;
+        float: right;
+        margin-left: 50px;
+        margin-right: 20px;
+        margin-top: 20px
+        background-color:none;
+  
+   
+    }
+</style>
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '9732885854', // App ID
+    channelUrl : '//http://brassballs.biz/channel', // Channel File
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+
+  // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
+  // for any authentication related change, such as login, logout or session refresh. This means that
+  // whenever someone who was previously logged out tries to log in again, the correct case below 
+  // will be handled.
+
+  FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    // the user is logged in and has authenticated your
+    // app, and response.authResponse supplies
+    // the user's ID, a valid access token, a signed
+    // request, and the time the access token 
+    // and signed request each expire
+    var uid = response.authResponse.userID;
+    var accessToken = response.authResponse.accessToken;
+  } else if (response.status === 'not_authorized') {
+    // the user is logged in to Facebook, 
+    // but has not authenticated your app
+	document.location = "http://brassballs.biz/splash";
+  } else {
+    // the user isn't logged in to Facebook.
+  	
+	document.location = "http://brassballs.biz/splash";
+  }
+
+
+
+ });
+  
+  FB.Event.subscribe('auth.authResponseChange', function(response) {
+    // Here we specify what we do with the response anytime this event occurs. 
+    if (response.status === 'connected') {
+      // The response object is returned with a status field that lets the app know the current
+      // login status of the person. In this case, we're handling the situation where they 
+      // have logged in to the app.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // In this case, the person is logged into Facebook, but not into the app, so we call
+      // FB.login() to prompt them to do so. 
+      // In real-life usage, you wouldn't want to immediately prompt someone to login 
+      // like this, for two reasons:
+      // (1) JavaScript created popup windows are blocked by most browsers unless they 
+      // result from direct interaction from people using the app (such as a mouse click)
+      // (2) it is a bad experience to be continually prompted to login upon page load.
+      FB.login();
+    } else {
+      // In this case, the person is not logged into Facebook, so we call the login() 
+      // function to prompt them to do so. Note that at this stage there is no indication
+      // of whether they are logged into the app. If they aren't then they'll see the Login
+      // dialog right after they log in to Facebook. 
+      // The same caveats as above apply to the FB.login() call here.
+      FB.login();
+    }
+  });
+  };
+
+  // Load the SDK asynchronously
+  (function(d){
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "//connect.facebook.net/en_US/all.js";
+   ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+  // Here we run a very simple test of the Graph API after login is successful. 
+  // This testAPI() function is only called in those cases. 
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+    });
+  }
+</script>
+
+
+<script>
+function fbLogout() {
+        FB.logout(function (response) {
+            //Do what ever you want here when logged out like reloading the page
+            window.location.reload();
+        });
+    }
+
+function FacebookInviteFriends() {
+FB.ui({
+method: 'apprequests',
+message: 'Do you have brass balls?',
+redirect_url: 'http://brassballs.biz/startgame/{{ user.username }}'
+});	
+}
+</script>
+
+
+<!-- Save for Web Slices (BB dashboard.bmp) -->
+<table id="Table_01" width="800" height="601" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td rowspan="3">
+			<a href='http://brassballs.biz/'><img src="images/BB_dashboard_logo.gif" width="393" height="129" alt=""></a></td>
+		<td width='297' height='85' colspan="4" rowspan="2" style="background-image:url('images/BB_dashboard_top_user.gif');" >
+			
+<fb:login-button show-faces="true" width="297" max-rows="1"></fb:login-button>
+		</td>
+		<td>
+			
+			<span id="fbLogout" onclick="fbLogout()"><a href='#' class="fb_button fb_button_medium"><span class="fb_button_text">
+			<img src="images/BB_dashboard_top_logout.gif" width="110" height="52" alt=""></td>
+	</span></a></span>
+
+		</tr>
+	<tr>
+		<td>
+			<img src="images/BB_dashboard_top_user_below.gif" width="110" height="33" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<a href='http://brassballs.biz/leaderboard'><img src="images/BB_dashboard_leaderboard.gif" width="131" height="44" alt=""></a></td>
+		<td>
+			<a href='http://brassballs.biz/about'><img src="images/BB_dashboard_rules.gif" width="78" height="44" alt=""></a></td>
+		<td colspan="2">
+			<a href='http://brassballs.biz/about'><img src="images/BB_dashboard_faq.gif" width="88" height="44" alt=""></a></td>
+		<td>
+			<a href='mailto:gerrit@mit.edu'><img src="images/BB_dashboard_contact.gif" width="110" height="44" alt=""></a></td>
+	</tr>
+	<tr>
+		<td colspan="6" width='800' height='80' style="background-image:url('images/BB_dashboard_welcome_boxes.gif');" >
+    {% if voted %}
+	Your vote is tallied -- you have until midnight to change 
+    {% endif %}
+    <div id="columns">
+        tallied at midnight
+    </div>
+    <div id="columns">
+        split-bonus: 2.1%
+    </div>
+    <div id="columns">
+        balance: ${{ money|floatformat:2 }}
+    </div>
+<div class="clearfix"></div>	
+		</td>
+	</tr>
+	<tr>
+		<td colspan="6" valign='top' style="background-color: #d6dbe1; background-image:url('images/BB_dashboard_games.gif'); background-repeat: repeat-x;" width="800" height="317"  >
+	<form action="http://gerrit.scripts.mit.edu/brassballs/bb/voteall" method="post">
+	    {% csrf_token %}
+<br/><br/>
+
+{% if active_matches %}
+<b>Active Games (click orange submit button to save changes)</b>
+{% endif %}
+<table width=800>
+	<tr>
+
+	    {% for values in active_matches %}
+		<td width='170'>
+
+<a href='http://facebook.com/profile.php?id={{ values.username }}' target='_blank'><img src='{{ values.pic_url }}' width='50' height='50'></a>
+ {{ values.first_name }} {{ values.last_name }}
+		</td>
+		<td width='65' style='text-align: center;'> ${{ values.money|floatformat:2 }}</td>
+		<td width='65' style='text-align: center;'> <input type="radio" {% if values.current_vote = 'split' %}checked{% endif %} name="{{ values.counter_id }}" value="split"></td>
+		<td width='65' style='text-align: center;'> <input type="radio" {% if values.current_vote = 'steal' %}checked{% endif %} name="{{ values.counter_id }}" value="steal"></td>
+	    {% cycle '<td width="5"> </td>' '<td width="*"></td></tr><tr>' %}
+	    {% endfor %}
+	    <td width='*'></td>
+	</tr>
+</table>
+
+{% if requests_incoming %}
+<b>Incoming Challenges</b>
+{% endif %}
+<table width=800>
+	<tr>
+
+	    {% for values in requests_incoming %}
+		<td width='170'>
+
+<a href='http://facebook.com/profile.php?id={{ values.username }}' target='_blank'><img src='{{ values.pic_url }}' width='50' height='50'></a>
+ {{ values.first_name }} {{ values.last_name }}
+		</td>
+		<td width='195' style='text-align: center;'> {{ values.first_name }} {{values.last_name}} has challenged you. <a href='http://brassballs.biz/match/{{ values.user_id }}'>Accept Challenge</a></td>
+	    {% cycle '<td width="5"> </td>' '<td width="*"></td></tr><tr>' %}
+	    {% endfor %}
+		<td width="*"></td>
+	</tr>
+</table>
+
+{% if requests_outgoing %}
+<b>Pending Requests</b>
+{% endif %}
+<table width=800>
+	<tr>
+
+	    {% for keys, values in requests_outgoing.items %}
+		<td width='170'>
+
+<a href='http://facebook.com/profile.php?id={{ values.username }}' target='_blank'><img src='{{ values.pic_url }}' width='50' height='50'></a>
+ {{ values.first_name }} {{ values.last_name }}
+		</td>
+	    {% cycle '<td width="5"> </td>' '<td width="*"></td></tr><tr>' %}
+	    {% endfor %}
+	    <td width='*'></td>
+	</tr>
+</table>
+
+{% if rand_user_list %}
+<b>Start a game</b> <br/>
+<i>Here's some random users -- find more on the <a href='http://brassballs.biz/leaderboard'>leaderboard</a></i>
+{% endif %}
+<table width=800>
+	<tr>
+
+	    {% for values in rand_user_list %}
+		<td width='170'>
+<a href='http://facebook.com/profile.php?id={{ values.username }}' target='_blank'><img src='{{ values.pic_url }}' width='50' height='50'></a>
+ {{ values.first_name }} {{ values.last_name }}
+		</td>
+		<td width='195' style='text-align: center;'> <a href='http://brassballs.biz/match/{{ values.user_id }}'>Challenge Now!</a></td>
+	    {% cycle '<td width="5"> </td>' '<td width="*"></td></tr><tr>' %}
+	    {% endfor %}
+	    <td width='*'></td>
+	</tr>
+</table>
+
+
+		
+
+	</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<img src="images/BB_dashboard_bottom_left.gif" width="662" height="74" alt=""></td>
+		<td colspan="2">
+			<input type='image' src="images/BB_dashboard_bottom_right_submit.gif" width="138" height="74" alt="submit"></form>
+</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/spacer.gif" width="393" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="131" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="78" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="60" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="28" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="110" height="1" alt=""></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>

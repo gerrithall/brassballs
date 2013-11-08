@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>BB Leaderboard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (BB Leaderboard.bmp) -->
+<table id="Table_01" width="801" height="600" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td rowspan="3">
+		<a href='http://brassballs.biz/'><img src="images/BB_Leaderboard_logo.gif" width="397" height="134" alt=""></a></td>
+		<td colspan="3" rowspan="2">
+			<img src="images/BB_Leaderboard_user_top.gif" width="289" height="83" alt=""></td>
+		<td>
+			<img src="images/BB_Leaderboard_top_logout.gif" width="114" height="66" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="66" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<a href='mailto:gerrit@mit.edu'><img src="images/BB_Leaderboard_contact.gif" width="114" height="68" alt=""></a></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="17" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<a href='http://brassballs.biz/leaderboard'><img src="images/BB_Leaderboard_leaderboard.gif" width="121" height="51" alt=""></a></td>
+		<td>
+			<a href='http://brassballs.biz/about'><img src="images/BB_Leaderboard_rules.gif" width="87" height="51" alt=""></a></td>
+		<td>
+			<a href='http://brassballs.biz/about'><img src="images/BB_Leaderboard_faq.gif" width="81" height="51" alt=""></a></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="51" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="5" style="background-image: url('images/BB_Leaderboard_main.gif'); background-repeat: repeat-x; background-color: #d6dbe1;">
+
+<br/><br/>
+<ol>
+
+<table width='100%'><tr><td valign='top'>
+	{% for values in leaders %}
+<li>			
+<a href='http://facebook.com/profile.php?id={{ values.username }}' target='_blank'><img src='{{ values.pic_url }}' width='50' height='50' ></a> {{ values.first_name }} {{ values.last_name }}
+${{ values.money|floatformat:2 }} {% if values.user_id != myid %}<a href='http://brassballs.biz/match/{{ values.user_id }}'> Challenge Them</a> {% endif %}
+		{% cycle '</td><td>' '</td></tr><tr><td>'%}	{% endfor %}
+</td></tr></table>	
+
+</ol>
+
+		</td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="466" alt=""></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>
